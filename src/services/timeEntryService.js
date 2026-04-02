@@ -27,12 +27,20 @@ export async function createTimeEntry(entry, date) {
     userIds: [],
   };
 
-  await axios.post(`${BASE_URL}/time-track/full`, payload, {
-    headers: {
-      Authorization: `Bearer ${TOKEN}`,
-      "Content-Type": "application/json",
-    },
-  });
+  console.log("Creating entry for:", payload);
+  try {
+    await axios.post(`${BASE_URL}/time-track/full`, payload, {
+      headers: {
+        Authorization: `Bearer ${TOKEN}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-  console.log("Entry created for:", entry.projectName);
+    console.log("Entry created for:", entry.projectName);
+    return time.nextStart;
+  } catch (error) {
+    console.error("API Error:", error.response?.data || error.message);
+
+    return currentStartTime; // ✅ prevent crash
+  }
 }

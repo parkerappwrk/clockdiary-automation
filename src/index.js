@@ -10,11 +10,20 @@ async function runAutomation() {
     // 2. Parse the message
     const days = parseLogMessage(message);
 
+    console.log("Days parsed successfully ✅ ",days);
+
     // 3. Send entries to ClockDiary
     for (const day of days) {
+      console.log("Entries for date:", day.date);
       let currentStartTime = day.date;
 
       for (const entry of day.entries) {
+        console.log("Entry for date:", entry);
+        console.log("currentStartTime for date:", currentStartTime);
+        if (!currentStartTime) {
+          console.error("Start time became invalid ❌");
+          break;
+        }
         currentStartTime = await createTimeEntry(entry, currentStartTime);
       }
     }

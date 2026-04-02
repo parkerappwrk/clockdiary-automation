@@ -1,12 +1,16 @@
-export function generateTimeRange(date, hours) {
-  const start = new Date(date);
-  const end = new Date(start);
+export function generateTimeRange(startTime, hours) {
+  const start = new Date(startTime);
 
-  end.setHours(start.getHours() + hours);
+  if (isNaN(start)) {
+    throw new Error("Invalid start time received");
+  }
+
+  const end = new Date(start);
+  end.setHours(end.getHours() + hours);
 
   return {
     start: start.toISOString(),
     end: end.toISOString(),
-    nextStart: end,
+    nextStart: end, // ✅ REQUIRED
   };
 }
