@@ -8,6 +8,7 @@ export function parseLogMessage(message) {
 
   lines.forEach((line) => {
     const trimmed = line.trim();
+    let billableStatus = false;
 
     // ---------- Detect date line (example: 19 March) ----------
     if (/^\d{1,2}\s[A-Za-z]+$/.test(trimmed)) {
@@ -25,10 +26,16 @@ export function parseLogMessage(message) {
     if (
       trimmed.includes("Clock Diary Billable") ||
       trimmed.includes("Upwork Manual Tracking") ||
-      trimmed.includes("Upwork Tracking")
+      trimmed.includes("Upwork Tracking") ||
+      trimmed.includes("Hubstaff Tracking")
     ) {
+      currentDay.currentBillable = true;
       currentDay.currentBlock = trimmed;
+    } else if (trimmed.includes("Non-Billable")) {
+      currentDay.currentBlock = trimmed;
+      currentDay.currentBillable = false;
     }
+    
 
     // ---------- Hours ----------
     const hoursMatch = trimmed.match(/(\d+):(\d+)/);
@@ -37,7 +44,7 @@ export function parseLogMessage(message) {
     }
 
     // ---------- Project ----------
-    if (trimmed.startsWith("Project:") || trimmed.startsWith("Project Name:")) {
+    if (trimmed.startsWith("Project:") || trimmed.startsWith("Project Name:") || trimmed.startsWith("Project name:")) {
       currentDay.currentProject = trimmed.replace(/Project Name:|Project:/, "").trim();
     }
 
@@ -49,8 +56,8 @@ export function parseLogMessage(message) {
         hours: currentDay.currentHours,
         projectName: currentDay.currentProject,
         description,
-        isBillable: true,
-      });
+        isBillable: currentDay.currentBillable || false,
+      });  
     }
   });
 
