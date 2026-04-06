@@ -7,7 +7,8 @@ export function parseLogMessage(message) {
   let currentDay = null;
 
   lines.forEach((line) => {
-    const trimmed = line.trim();
+    const lowered = line.trim();
+    const trimmed = lowered.toLowerCase();
     let billableStatus = false;
 
     // ---------- Detect date line (example: 19 March) ----------
@@ -24,10 +25,10 @@ export function parseLogMessage(message) {
 
     // ---------- Detect billable block ----------
     if (
-      trimmed.includes("Clock Diary Billable") ||
-      trimmed.includes("Upwork Manual Tracking") ||
-      trimmed.includes("Upwork Tracking") ||
-      trimmed.includes("Hubstaff Tracking")
+      trimmed.includes("clock diary billable") ||
+      trimmed.includes("upwork manual tracking") ||
+      trimmed.includes("upwork tracking") ||
+      trimmed.includes("hubstaff tracking")
     ) {
       currentDay.currentBillable = true;
       currentDay.currentBlock = trimmed;
@@ -47,13 +48,13 @@ export function parseLogMessage(message) {
     }
 
     // ---------- Project ----------
-    if (trimmed.startsWith("Project:") || trimmed.startsWith("Project Name:") || trimmed.startsWith("Project name:")) {
-      currentDay.currentProject = trimmed.replace(/Project Name:|Project:/, "").trim();
+    if (trimmed.startsWith("project:") || trimmed.startsWith("project Name:")) {
+      currentDay.currentProject = trimmed.replace(/project name:|project:/, "").trim();
     }
 
     // ---------- Task ----------
-    if (trimmed.startsWith("Task:")) {
-      const description = trimmed.replace("Task:", "").trim();
+    if (trimmed.startsWith("task:")) {
+      const description = trimmed.replace("task:", "").trim();
 
       currentDay.entries.push({
         hours: currentDay.currentHours,
