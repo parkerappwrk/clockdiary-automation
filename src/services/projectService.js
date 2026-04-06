@@ -12,10 +12,19 @@ export async function getProjectId(projectName) {
   );
 
   const projects = response.data;
+  let projectFound = true;
+
 
   const match = projects.find((p) =>
     p.name.toLowerCase().includes(projectName.toLowerCase())
   );
 
-  return match ? match.id : null;
+  if (!match) {
+    match = projects.find(
+      (p) => p.name.toLowerCase() === "no work assigned"
+    );
+    projectFound = false;
+  }
+
+  return {id: match ? match.id : null, status: projectFound};
 }

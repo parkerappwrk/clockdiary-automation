@@ -8,17 +8,19 @@ export async function createTimeEntry(entry, date) {
   const projectId = await getProjectId(entry.projectName);
   const tagId = await getTagId();
 
-  if (!projectId) {
+  if (!projectId.id) {
     console.log("Project not found:", entry.projectName);
     return;
   }
+
+  const description = projectId.status ? entry.description : entry.projectName - entry.projectName;
 
   const time = generateTimeRange(date, entry.hours);
 
   const payload = {
     creationSource: "Web",
     customFields: [],
-    description: entry.description,
+    description: description,
     start: time.start,
     end: time.end,
     isBillable: entry.isBillable,

@@ -11,6 +11,6 @@ export function generateTimeRange(startTime, hours) {
   return {
     start: start.toISOString(),
     end: end.toISOString(),
-    nextStart: end, // ✅ REQUIRED
+    nextStart: end,
   };
 }

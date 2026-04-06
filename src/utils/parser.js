@@ -9,7 +9,6 @@ export function parseLogMessage(message) {
   lines.forEach((line) => {
     const lowered = line.trim();
     const trimmed = lowered.toLowerCase();
-    let billableStatus = false;
 
     // ---------- Detect date line (example: 19 March) ----------
     if (/^\d{1,2}\s[A-Za-z]+$/.test(trimmed)) {
