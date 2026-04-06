@@ -10,6 +10,9 @@ export function parseLogMessage(message) {
     const lowered = line.trim();
     const trimmed = lowered.toLowerCase();
 
+    console.log('parseLogMessage');
+    console.log(trimmed);
+
     // ---------- Detect date line (example: 19 March) ----------
     if (/^\d{1,2}\s[A-Za-z]+$/.test(trimmed)) {
       if (currentDay) days.push(currentDay);
@@ -38,16 +41,19 @@ export function parseLogMessage(message) {
     
 
     // ---------- Hours ----------
-    const hoursMatch = trimmed.match(/(\d+):(\d+)/);
-    if (hoursMatch && currentDay) {
-      const hours = parseInt(hoursMatch[1]);
-      const minutes = parseInt(hoursMatch[2]);
+    if (trimmed.includes("hours")) {
+      const hoursMatch = trimmed.match(/(\d+):(\d+)/);
 
-      currentDay.currentHours = hours + minutes / 60;
+      if (hoursMatch && currentDay) {
+        const hours = parseInt(hoursMatch[1]);
+        const minutes = parseInt(hoursMatch[2]);
+
+        currentDay.currentHours = hours + minutes / 60;
+      }
     }
 
     // ---------- Project ----------
-    if (trimmed.startsWith("project:") || trimmed.startsWith("project Name:")) {
+    if (trimmed.startsWith("project:") || trimmed.startsWith("project name:")) {
       currentDay.currentProject = trimmed.replace(/project name:|project:/, "").trim();
     }
 

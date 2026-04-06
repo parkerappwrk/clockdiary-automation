@@ -11,6 +11,8 @@ async function runAutomation() {
     for (const day of days) {
       let currentStartTime = day.date;
 
+      console.log("Creating entries for:", currentStartTime);
+
       for (const entry of day.entries) {
         if (!currentStartTime) {
           console.error("Start time became invalid ❌");

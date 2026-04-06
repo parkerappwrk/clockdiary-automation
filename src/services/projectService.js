@@ -1,9 +1,10 @@
 import axios from "axios";
 import { BASE_URL, TOKEN } from "../config/env.js";
 
+
 export async function getProjectId(projectName) {
   const response = await axios.get(
-    `${BASE_URL}/project-picker/projects?name=${encodeURIComponent(projectName)}&includeMatchedClients=true&excludeProjectsOfManagedUsers=true`,
+    `${BASE_URL}/project-picker/projects?name=&includeMatchedClients=true&excludeProjectsOfManagedUsers=true`,
     {
       headers: {
         Authorization: `Bearer ${TOKEN}`,
@@ -12,10 +13,10 @@ export async function getProjectId(projectName) {
   );
 
   const projects = response.data;
+  
   let projectFound = true;
 
-
-  const match = projects.find((p) =>
+  let match = projects.find((p) =>
     p.name.toLowerCase().includes(projectName.toLowerCase())
   );
 
@@ -26,5 +27,5 @@ export async function getProjectId(projectName) {
     projectFound = false;
   }
 
-  return {id: match ? match.id : null, status: projectFound};
+  return {id: match.id, status: projectFound};
 }

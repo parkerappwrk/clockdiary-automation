@@ -13,23 +13,22 @@ export async function createTimeEntry(entry, date) {
     return;
   }
 
-  const description = projectId.status ? entry.description : entry.projectName - entry.projectName;
+  let taskDescription = projectId.status === true ? entry.description : entry.description+' - '+entry.projectName;
 
   const time = generateTimeRange(date, entry.hours);
 
   const payload = {
     creationSource: "Web",
     customFields: [],
-    description: description,
+    description: taskDescription,
     start: time.start,
     end: time.end,
     isBillable: entry.isBillable,
-    projectId,
+    projectId: projectId.id,
     tagIds: [tagId],
     userIds: [],
   };
-
-  console.log("Creating entry for:", payload);
+  
   try {
     await axios.post(`${BASE_URL}/time-track/full`, payload, {
       headers: {
