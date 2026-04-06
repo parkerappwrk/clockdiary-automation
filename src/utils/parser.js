@@ -40,7 +40,10 @@ export function parseLogMessage(message) {
     // ---------- Hours ----------
     const hoursMatch = trimmed.match(/(\d+):(\d+)/);
     if (hoursMatch && currentDay) {
-      currentDay.currentHours = parseInt(hoursMatch[1]);
+      const hours = parseInt(hoursMatch[1]);
+      const minutes = parseInt(hoursMatch[2]);
+
+      currentDay.currentHours = hours + minutes / 60;
     }
 
     // ---------- Project ----------

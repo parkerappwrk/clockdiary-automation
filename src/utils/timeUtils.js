@@ -6,7 +6,7 @@ export function generateTimeRange(startTime, hours) {
   }
 
   const end = new Date(start);
-  end.setHours(end.getHours() + hours);
+  end.setTime(end.getTime() + hours * 60 * 60 * 1000);
 
   return {
     start: start.toISOString(),
