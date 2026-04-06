@@ -10,9 +10,6 @@ export function parseLogMessage(message) {
     const lowered = line.trim();
     const trimmed = lowered.toLowerCase();
 
-    console.log('parseLogMessage');
-    console.log(trimmed);
-
     // ---------- Detect date line (example: 19 March) ----------
     if (/^\d{1,2}\s[A-Za-z]+$/.test(trimmed)) {
       if (currentDay) days.push(currentDay);
