@@ -31,7 +31,7 @@ export function parseLogMessage(message) {
     ) {
       currentDay.currentBillable = true;
       currentDay.currentBlock = trimmed;
-    } else if (trimmed.includes("Non-Billable")) {
+    } else if (trimmed.includes("non-billable")) {
       currentDay.currentBlock = trimmed;
       currentDay.currentBillable = false;
     }
